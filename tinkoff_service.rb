@@ -1,4 +1,3 @@
-require './api/pushover_api'
 require './api/tinkoff_api'
 require './tinkoff_atm'
 

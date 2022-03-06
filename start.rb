@@ -1,30 +1,31 @@
 require './tinkoff_service'
+require './pushover_service'
 require './tinkoff_atm_filter'
 
 BOTTOM_LEFT = { lat: 55.56727024240635, lng: 37.56896544957144 }
 TOP_RIGHT = { lat: 55.56741881152076, lng: 37.569773465037166 }
 
-filter = TinkoffAtmFilter.new
+filter_params = TinkoffAtmFilter.new.geo(bottom_left: BOTTOM_LEFT, top_right: TOP_RIGHT)
+                                    .show_unavailable(true)
+                                    .banks(['tcs'])
+                                    .currencies(['RUB'])
+                                    .zoom(21)
+tinkoff_service = TinkoffService.new
+pushover_service = PushoverService.new
 
-filter_params = filter.geo(bottom_left: BOTTOM_LEFT, top_right: TOP_RIGHT)
-                      .show_unavailable(true)
-                      .banks(['tcs'])
-                      .currencies(['RUB'])
-                      .zoom(21)
-
-interval = 300
+interval = 60
 
 while true do
-  atm = TinkoffService.new.get_atm(filter_params)
+  atm = tinkoff_service.get_atm(filter_params)
 
   if atm.usd_available?
     message = "USD available at Grina st. ATM! Amount of USD: #{atm.usd_amount}, time: #{Time.now.strftime('%H:%M:%S')}"
-    PushoverApi.send(Credentials::PUSHOVER_MY_APP, message)
+    pushover_service.send(message)
     break
   else
     message = "No USD available, time: #{Time.now.strftime('%H:%M:%S')}"
-    puts message
   end
 
+  puts message
   sleep interval
 end
