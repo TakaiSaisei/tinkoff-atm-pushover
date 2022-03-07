@@ -1,5 +1,5 @@
 require './api/tinkoff_api'
-require './tinkoff_atm'
+require './models/tinkoff_atm'
 
 class TinkoffService
   def get_atm(filter = nil)

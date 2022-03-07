@@ -1,6 +1,6 @@
-require './tinkoff_service'
-require './pushover_service'
-require './tinkoff_atm_filter'
+require './services/tinkoff_service'
+require './services/pushover_service'
+require './services/tinkoff_atm_filter'
 
 BOTTOM_LEFT = { lat: 55.56727024240635, lng: 37.56896544957144 }
 TOP_RIGHT = { lat: 55.56741881152076, lng: 37.569773465037166 }
@@ -19,13 +19,14 @@ while true do
   atm = tinkoff_service.get_atm(filter_params)
 
   if atm.usd_available?
-    message = "USD available at Grina st. ATM! Amount of USD: #{atm.usd_amount}, time: #{Time.now.strftime('%H:%M:%S')}"
+    message = "USD available at Grina st. ATM! Amount of USD: #{atm.usd_amount}, time: #{Time.now.strftime('%H:%M')}"
     pushover_service.send(message)
+    puts message
     break
   else
-    message = "No USD available, time: #{Time.now.strftime('%H:%M:%S')}"
+    message = "No USD available, time: #{Time.now.strftime('%H:%M')}"
+    puts message
   end
 
-  puts message
   sleep interval
 end
