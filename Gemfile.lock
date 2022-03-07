@@ -8,16 +8,12 @@ GEM
       mime-types-data (~> 3.2015)
     mime-types-data (3.2022.0105)
     multi_xml (0.6.0)
-    rack (2.2.3)
-    robocop (0.1.1)
-      rack
 
 PLATFORMS
   arm64-darwin-21
 
 DEPENDENCIES
   httparty
-  robocop
 
 RUBY VERSION
    ruby 3.1.1p18
