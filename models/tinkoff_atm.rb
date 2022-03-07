@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'ostruct'
 
 class TinkoffAtm
@@ -9,9 +11,7 @@ class TinkoffAtm
 
   def usd_available?
     limits.each do |limit|
-      if limit.currency == 'USD'
-        return true
-      end
+      return true if limit.currency == 'USD'
     end
 
     false
@@ -19,9 +19,7 @@ class TinkoffAtm
 
   def usd_amount
     limits.each do |limit|
-      if limit.currency == 'USD'
-        return limit.amount
-      end
+      return limit.amount if limit.currency == 'USD'
     end
   end
 
@@ -34,4 +32,5 @@ class TinkoffAtm
   def limits
     cluster.points.first.limits
   end
+
 end

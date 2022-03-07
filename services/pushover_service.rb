@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require './api/pushover_api'
 
 class PushoverService

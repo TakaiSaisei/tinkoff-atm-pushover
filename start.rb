@@ -1,21 +1,24 @@
+# frozen_string_literal: true
+
 require './services/tinkoff_service'
 require './services/pushover_service'
 require './services/tinkoff_atm_filter'
 
-BOTTOM_LEFT = { lat: 55.56727024240635, lng: 37.56896544957144 }
-TOP_RIGHT = { lat: 55.56741881152076, lng: 37.569773465037166 }
+BOTTOM_LEFT = { lat: 55.56727024240635, lng: 37.56896544957144 }.freeze
+TOP_RIGHT = { lat: 55.56741881152076, lng: 37.569773465037166 }.freeze
 
-filter_params = TinkoffAtmFilter.new.geo(bottom_left: BOTTOM_LEFT, top_right: TOP_RIGHT)
-                                    .show_unavailable(true)
-                                    .banks(['tcs'])
-                                    .currencies(['RUB'])
-                                    .zoom(21)
+filter_params = TinkoffAtmFilter.new
+                                .geo(bottom_left: BOTTOM_LEFT, top_right: TOP_RIGHT)
+                                .show_unavailable(true)
+                                .banks(['tcs'])
+                                .currencies(['RUB'])
+                                .zoom(21)
 tinkoff_service = TinkoffService.new
 pushover_service = PushoverService.new
 
 interval = 60
 
-while true do
+loop do
   atm = tinkoff_service.get_atm(filter_params)
 
   if atm.usd_available?
